@@ -1,25 +1,11 @@
 // Add console.log to check to see if our code is working.
 console.log("working");
 
-// Create the map object with center at the San Francisco airport.
-let map = L.map('mapid').setView([37.6213, -122.3790], 5);
+// Create the map object with a center and zoom level.
+let map = L.map('mapid').setView([40.7, -94.5], 4);
 
-
-// Coordinates for each point to be used in the polyline.
-let line = [
-    [33.9416, -118.4085],
-    [30.1975, -97.6664],
-    [40.6413, -73.7781],
-    [43.6777, -79.6248]
-    
-    
-  ];
-
-
-// Create a polyline using the line coordinates and make the line yellow.
-L.polyline(line, {
-    color: "blue"
-     }).addTo(map);
+//  Add a marker to the map for Los Angeles, California.
+// An array containing each city's location, state, and population.
 
 // Get data from cities.js
 let cityData = cities;
