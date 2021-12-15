@@ -24,34 +24,40 @@ let baseMaps = {
 
   // Create the map object with center, zoom level and default layer.
 let map = L.map('mapid', {
-    center: [43.7, -79.3],
-    zoom: 11,
+    center: [39.5, -98.5],
+    zoom: 3,
     layers: [streets]
 })
 
 // Pass our map layers into our layers control and add the layers control to the map.
 L.control.layers(baseMaps).addTo(map);
-//dark.addTo(map);
 
-// Accessing the airport GeoJSON URL
-let torontoHoods = "https://raw.githubusercontent.com/cflavallee/Mapping_Earthquakes/main/torontoNeighborhoods.json";
 
-/// Create a style for the lines.
-let myStyle = {
-  color: "blue",
-  weight: 1,
-  fillColor: "yellow"
-}
-
-// Grabbing our GeoJSON data.
-d3.json(torontoHoods).then(function(data) {
-    console.log(data)    
-    
-  // Creating a GeoJSON layer with the retrieved data.
-    L.geoJSON(data, {
-        style: myStyle,
-              onEachFeature: function(feature, layer) {
-                layer.bindPopup("<h3> Neighborhood:" + feature.properties.AREA_NAME)}  
-     
-}).addTo(map);
+// Retrieve the earthquake GeoJSON data.
+d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
+  function styleInfo(feature) {
+    return {
+      opacity: 1,
+      fillOpacity: 1,
+      fillColor: "#ffae42",
+      color: "#000000",
+      radius: getRadius(feature.properties.mag),
+      stroke: true,
+      weight: 0.5
+    };
+  }
+      function getRadius(magnitude) {
+        if (magnitude === 0) {
+          return 1;
+        }
+        return magnitude * 4;
+    }
+  L.geoJSON(data, {
+  // We turn each feature into a circleMarker on the map.
+    pointToLayer: function(feature, latlng) {
+              console.log(data);
+              return L.circleMarker(latlng);
+          },
+        style: styleInfo
+      }).addTo(map);
   });
