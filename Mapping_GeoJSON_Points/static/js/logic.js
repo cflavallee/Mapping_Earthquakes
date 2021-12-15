@@ -68,11 +68,16 @@ let airportData = "https://raw.githubusercontent.com/cflavallee/Mapping_Earthqua
 
 // Grabbing our GeoJSON data.
 d3.json(airportData).then(function(data) {
-    console.log(data);
+    console.log(data)    
     
   // Creating a GeoJSON layer with the retrieved data.
-  L.geoJSON(data).addTo(map);
-});
+    L.geoJSON(data, {
+      onEachFeature: function(feature, layer) {
+              console.log(layer);
+              layer.bindPopup("<h2>" + "Airport Code:" + "  " +  feature.properties.faa + "<br>" + "____________________________" + "<br>" + "<br>" + "Airport Name:" + " " + feature.properties.name + "</h2>");
+            }
+    }).addTo(map);
+  });
 
 // // Grabbing our GeoJSON data.
 // L.geoJSON(sanFranAirport, {
